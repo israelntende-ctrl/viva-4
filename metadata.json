@@ -1,0 +1,6 @@
+{
+  "name": "VCS Clearance Portal",
+  "description": "Official Victory College School clearance system featuring Firestore database sync, cryptographic password hashing, role-based access control, photographic book proof verification, digital faculty signatures, Africa's Talking Guardian SMS Gateway notifications, public anti-forgery certificate verification, hierarchical class & stream registration with analytics graphs, term archives, and customizable printable clearance cards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

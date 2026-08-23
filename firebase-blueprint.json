@@ -1,0 +1,128 @@
+{
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "Registered faculty teachers and school administrators",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "teacher"] },
+        "department": { "type": "string" },
+        "assignedSubjects": { "type": "array", "items": { "type": "string" } },
+        "initials": { "type": "string" },
+        "phone": { "type": "string" },
+        "password": { "type": "string" },
+        "passwordSalt": { "type": "string" },
+        "signatureDataUrl": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "name", "role", "department"]
+    },
+    "learners": {
+      "title": "Learners",
+      "description": "Student candidate records with notes clearance status and photo proofs",
+      "type": "object",
+      "properties": {
+        "regNo": { "type": "string" },
+        "name": { "type": "string" },
+        "class": { "type": "string" },
+        "stream": { "type": "string" },
+        "house": { "type": "string" },
+        "guardianContact": { "type": "string" },
+        "feesStatus": { "type": "string" },
+        "subjects": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["regNo", "name", "class", "stream", "subjects"]
+    },
+    "settings": {
+      "title": "SchoolSettings",
+      "description": "School settings including card design, registered classes, and SMS gateway configuration",
+      "type": "object",
+      "properties": {
+        "academicYear": { "type": "string" },
+        "term": { "type": "string" },
+        "schoolName": { "type": "string" },
+        "schoolMotto": { "type": "string" },
+        "cardDesignTemplate": { "type": "string" },
+        "cardsPerPage": { "type": "number" },
+        "registeredClasses": { "type": "array" },
+        "smsGateway": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      }
+    },
+    "auditLogs": {
+      "title": "AuditLogs",
+      "description": "Tamper-proof history of subject clearance confirmations, notes approvals, and bulk actions",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string" },
+        "officerName": { "type": "string" },
+        "officerRole": { "type": "string" },
+        "learnerRegNo": { "type": "string" },
+        "learnerName": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" }
+      },
+      "required": ["timestamp", "officerName", "learnerRegNo", "action"]
+    },
+    "smsLogs": {
+      "title": "SmsLogs",
+      "description": "Dispatched guardian SMS notifications and delivery receipts",
+      "type": "object",
+      "properties": {
+        "recipientPhone": { "type": "string" },
+        "learnerRegNo": { "type": "string" },
+        "triggerType": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string" },
+        "gateway": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["recipientPhone", "message", "status", "timestamp"]
+    },
+    "archives": {
+      "title": "TermArchives",
+      "description": "Archived term cohorts and historical clearance snapshots",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "term": { "type": "string" },
+        "archivedAt": { "type": "string" },
+        "totalLearners": { "type": "number" },
+        "clearedLearners": { "type": "number" },
+        "learnersSnapshot": { "type": "array" }
+      },
+      "required": ["name", "academicYear", "term", "archivedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "Academic faculty and administrator credentials"
+    },
+    "/learners/{learnerId}": {
+      "schema": "learners",
+      "description": "Candidate clearance folios and photo proofs"
+    },
+    "/settings/{settingId}": {
+      "schema": "settings",
+      "description": "Institutional configuration, class rosters, and SMS gateways"
+    },
+    "/auditLogs/{logId}": {
+      "schema": "auditLogs",
+      "description": "Immutable chronological system action trail"
+    },
+    "/smsLogs/{smsId}": {
+      "schema": "smsLogs",
+      "description": "Guardian SMS notification records and delivery receipts"
+    },
+    "/archives/{archiveId}": {
+      "schema": "archives",
+      "description": "Historic term clearance snapshots"
+    }
+  }
+}

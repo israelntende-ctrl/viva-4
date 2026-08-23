@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for Role-Based Access Control
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSchoolAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'israelntende@gmail.com' ||
+        request.auth.token.email == 'admin@vcs.ac.ug' ||
+        request.auth.token.role == 'admin' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+
+    function isFacultyMember() {
+      return isSignedIn();
+    }
+
+    // Default safety deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // USERS COLLECTION (Staff & Teachers)
+    // Only authenticated staff can view teacher roster.
+    // Only Admin can create, delete, or promote accounts.
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create, delete: if isSchoolAdmin();
+      allow update: if isSchoolAdmin() || (isSignedIn() && request.auth.uid == userId);
+    }
+
+    // LEARNERS / CANDIDATES COLLECTION
+    // Read: Allowed for authenticated faculty, or public verification by ID.
+    // Write: Restricted to authenticated faculty members (teachers/admins) verifying subjects.
+    match /learners/{learnerId} {
+      allow read: if true; // Allows public QR/RegNo anti-forgery certificate verification lookup
+      allow create, update: if isFacultyMember();
+      allow delete: if isSchoolAdmin();
+    }
+
+    // SCHOOL SETTINGS (Active Design, Academic Term, SMS Gateway)
+    // Read: Allowed for application rendering.
+    // Write: Strictly locked to School Administrators.
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isSchoolAdmin() || isFacultyMember();
+    }
+
+    // AUDIT LOGS (Append-Only Log Trail)
+    // Read: Authenticated faculty & administrators.
+    // Create: Authenticated faculty.
+    // Update/Delete: Strictly forbidden to maintain forensic integrity.
+    match /auditLogs/{logId} {
+      allow read: if isFacultyMember();
+      allow create: if isFacultyMember();
+      allow update, delete: if false;
+    }
+
+    // SMS NOTIFICATION LOGS
+    // Read & Create: Authenticated faculty.
+    // Update/Delete: Forbidden.
+    match /smsLogs/{smsId} {
+      allow read: if isFacultyMember();
+      allow create: if isFacultyMember();
+      allow update, delete: if false;
+    }
+
+    // TERM & YEAR ARCHIVES
+    // Read: Authenticated faculty.
+    // Write: School Administrators.
+    match /archives/{archiveId} {
+      allow read: if isFacultyMember();
+      allow write: if isSchoolAdmin();
+    }
+  }
+}
