@@ -530,7 +530,7 @@ export const LearnerClearanceModal: React.FC<LearnerClearanceModalProps> = ({
                       onClick={() => {
                         const sid = prompt('Enter Subject ID or Code to override:');
                         if (!sid) return;
-                        const action = confirm('Click OK to DROP requirement, Cancel to ADD requirement') ? 'drop' : 'add';
+                        const action: 'add' | 'drop' = confirm('Click OK to DROP requirement, Cancel to ADD requirement') ? 'drop' : 'add';
                         const reason = prompt('Reason for override:');
                         if (!reason) return;
                         

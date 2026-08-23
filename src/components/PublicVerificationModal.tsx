@@ -53,7 +53,7 @@ export const PublicVerificationModal: React.FC<PublicVerificationModalProps> = (
     try {
       // Look up locally first or query Firestore
       const clean = searchQuery.trim().toUpperCase();
-      let found = learners.find((l) => l.regNo.toUpperCase() === clean || l.id === clean);
+      let found: Learner | null = learners.find((l) => l.regNo.toUpperCase() === clean || l.id === clean) || null;
       if (!found) {
         found = await DbService.verifyPublicCertificate(searchQuery);
       }

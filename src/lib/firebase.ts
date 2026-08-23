@@ -33,12 +33,10 @@ const firebaseConfig = {
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
 // Initialize Firestore with custom database ID if available
-export const db = getFirestore(
-  app, 
-  firebaseConfigData.firestoreDatabaseId && firebaseConfigData.firestoreDatabaseId !== '(default)'
-    ? firebaseConfigData.firestoreDatabaseId
-    : undefined
-);
+const firestoreDatabaseId = firebaseConfigData.firestoreDatabaseId;
+export const db = firestoreDatabaseId && firestoreDatabaseId !== '(default)'
+  ? getFirestore(app, firestoreDatabaseId)
+  : getFirestore(app);
 
 export { 
   collection, 

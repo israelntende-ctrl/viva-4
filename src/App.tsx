@@ -1223,7 +1223,7 @@ export default function App() {
                         for (const c of settings.registeredClasses) {
                           const f = c.streams.find((s) => s.name === st);
                           if (f) {
-                            streamMeta = { patron: f.patron || 'Unassigned', room: f.room || '', capacity: f.capacity || 45 };
+                            streamMeta = { patron: f.patronName || 'Unassigned', room: f.room || '', capacity: f.capacity || 45 };
                             break;
                           }
                         }
@@ -1735,7 +1735,7 @@ export default function App() {
         <ClassStreamManagerModal
           settings={settings}
           learners={learners}
-          teachers={users}
+          users={users}
           onSaveSettings={handleSaveSettings}
           onClose={() => setIsClassStreamManagerOpen(false)}
         />

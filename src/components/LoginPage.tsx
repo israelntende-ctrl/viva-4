@@ -127,14 +127,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ users, dbStatus, onLoginSu
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#1A1A1A] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
-      {/* Background texture / brand wash */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#5B0B19] via-[#3A0710] to-[#1A1A1A]" />
+    <div className="min-h-screen w-full bg-[#FAF8F5] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+      {/* Quiet paper texture shared with the portal workspace */}
       <div
-        className="absolute inset-0 opacity-[0.06]"
+        className="absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(45deg, #D4AF37 0, #D4AF37 1px, transparent 1px, transparent 24px)',
+            'repeating-linear-gradient(0deg, transparent 0, transparent 31px, #7A1326 31px, #7A1326 32px), repeating-linear-gradient(90deg, transparent 0, transparent 31px, #7A1326 31px, #7A1326 32px)',
         }}
       />
 
@@ -272,7 +271,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ users, dbStatus, onLoginSu
           </div>
         </div>
 
-        <p className="text-center text-[10px] text-white/40 mt-5 uppercase tracking-widest">
+        <p className="text-center text-[10px] text-[#1A1A1A]/45 mt-5 uppercase tracking-widest">
           &copy; {new Date().getFullYear()} Victory College School &middot; Secured with SHA-256 Credential Hashing
         </p>
       </div>
